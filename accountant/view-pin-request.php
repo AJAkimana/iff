@@ -51,7 +51,7 @@ function pin_generate(){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Mlml Website  - View Pin Request</title>
+    <title>IFF</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
