@@ -19,6 +19,7 @@ if(isset($_GET['join_user'])){
 	$side = mysqli_real_escape_string($con,$_GET['side']);
 	$sponsor = mysqli_real_escape_string($con,$_GET['sponsor']);
 	$password = mysqli_real_escape_string($con,$_GET['pass1']);
+	$date = date("y-m-d");
 	$user_status= "Active";
 	$picture="images.png";
 	
@@ -67,11 +68,11 @@ if(isset($_GET['join_user'])){
 	if($flag==1){
 		
 		//Insert into User profile
-		$query = mysqli_query($con,"insert into user(`userident`,`Names`,`NationalID`,`password`,`mobile`,`address`,`under_userpin`,`side`,`user_status`,`picture`) values('$pin','$names','$natio_id','$password','$mobile','$address','$under_userpin','$side','$user_status','$picture')");
+		$query = mysqli_query($con,"insert into user(`userident`,`Names`,`NationalID`,`password`,`mobile`,`address`,`under_userpin`,`side`,`user_status`,`picture`,`date`) values('$pin','$names','$natio_id','$password','$mobile','$address','$under_userpin','$side','$user_status','$picture','$date')");
 		
 		//Insert into Tree
 		//So that later on we can view tree.
-		$query = mysqli_query($con,"insert into tree(`userident`,`Names`) values('$pin','$names')");
+		$query = mysqli_query($con,"insert into tree(`userident`,`Names`,`date`) values('$pin','$names','$date')");
 		
 		//Insert to side
 		$query = mysqli_query($con,"update tree set `$side`='$pin' where userident='$under_userpin'");
@@ -80,7 +81,7 @@ if(isset($_GET['join_user'])){
 		$query = mysqli_query($con,"update pin_list set status='close' where pin='$pin'");
 		
 		//Inset into Icome
-		$query = mysqli_query($con,"insert into income (`userident`) values('$pin')");
+		$query = mysqli_query($con,"insert into income (`userident`,`date`) values('$pin','$date')");
 		echo mysqli_error($con);
 		//This is the main part to join a user\
 		//If you will do any mistake here. Then the site will not work.
@@ -95,35 +96,59 @@ if(isset($_GET['join_user'])){
 		// $i=1;
 
 		//Loop
-		if ($temp_sponsor!="")
-		{
-			$income_data = income($temp_sponsor);
 
-			$new_day_bal = $income_data['day_bal']+5000;
-			$new_current_bal = $income_data['current_bal']+5000;
-			$new_total_bal = $income_data['total_bal']+5000;
-								
-			//update income
-			mysqli_query($con,"update income set day_bal='$new_day_bal', current_bal='$new_current_bal', total_bal='$new_total_bal' where userident='$temp_sponsor' limit 1");
-		}
-		global $con,$userident;
-		$query =mysqli_query($con,"select * from tree where userident='$temp_under_userpin'");
-		$result = mysqli_fetch_array($query); 
-		if(mysqli_num_rows($query)>0){
-			if ($result["left"] != null && $result["right"] != ""){
-			$income_data = income($temp_under_userpin);
+		while($total_count>0){
+			// $i;
+			$q = mysqli_query($con,"select * from tree where userident='$temp_under_userpin'");
+			$r = mysqli_fetch_array($q);
+			$current_temp_side_count = $r[$temp_side_count]+1;
+			// $temp_under_userpin;
+			// $temp_side_count;
+			mysqli_query($con,"update tree set `$temp_side_count`=$current_temp_side_count where userident='$temp_under_userpin'");
+			
+			//income
+			if($temp_sponsor!=""){
+				$income_data1 = income($temp_sponsor);
+				$income_data2 = income($temp_under_userpin);
+				
+				
+					$tree_data = tree($temp_under_userpin);
 
-			$new_day_bal = $income_data['day_bal']+10000;
-			$new_current_bal = $income_data['current_bal']+10000;
-			$new_total_bal = $income_data['total_bal']+10000;
-								
-			//update income
-			mysqli_query($con,"update income set day_bal='$new_day_bal', current_bal='$new_current_bal', total_bal='$new_total_bal' where userident='$temp_under_userpin' limit 1");
+					$temp_left_count = $tree_data['leftcount'];
+					$temp_right_count = $tree_data['rightcount'];
+					
+						
+					
+				
+				//change under_userpin
+				$next_under_userpin = getUnderId($temp_under_userpin);
+				$temp_side = getUnderIdPlace($temp_under_userpin);
+				$temp_side_count = $temp_side.'count';
+				$temp_under_userpin = $next_under_userpin;	
+				
+				// $i++;
+			}
+			
+			//Chaeck for the last user
+			if($temp_under_userpin==""){
+				$total_count=0;
+			}
+			
+		}//Loop
 		
-		}
-	}
+		
+		
 		
 		echo mysqli_error($con);
+		if($temp_left_count === $temp_right_count && $temp_left_count!='' && $temp_right_count!='' && ($temp_left_count + $temp_right_count) % 2 ==0 )
+		{
+
+			// $matching=$matching+2;
+			// if($matching===2){
+				
+			// }
+			
+		}
 		
 		echo '<script>alert("User Registered successfully.");</script>';
 		echo $matching;

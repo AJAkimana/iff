@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 12, 2019 at 07:50 PM
--- Server version: 10.3.16-MariaDB
--- PHP Version: 7.3.6
+-- Host: localhost
+-- Generation Time: Nov 14, 2019 at 12:18 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.3.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -71,23 +71,26 @@ INSERT INTO `admin` (`id`, `userident`, `password`, `Names`, `picture`) VALUES
 CREATE TABLE `income` (
   `id` int(11) NOT NULL,
   `userident` int(11) DEFAULT NULL,
-  `day_bal` int(11) DEFAULT 0,
-  `current_bal` int(11) DEFAULT 0,
-  `total_bal` int(11) DEFAULT 0
+  `day_bal` int(11) DEFAULT '0',
+  `current_bal` int(11) DEFAULT '0',
+  `total_bal` int(11) DEFAULT '0',
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `income`
 --
 
-INSERT INTO `income` (`id`, `userident`, `day_bal`, `current_bal`, `total_bal`) VALUES
-(1, 1001, 30000, 30000, 30000),
-(20, 369351, 10000, 10000, 10000),
-(21, 771584, 20000, 20000, 20000),
-(22, 528095, 0, 0, 0),
-(23, 711534, 0, 0, 0),
-(24, 850842, 0, 0, 0),
-(25, 126192, 0, 0, 0);
+INSERT INTO `income` (`id`, `userident`, `day_bal`, `current_bal`, `total_bal`, `date`) VALUES
+(1, 1001, 0, 0, 0, '2019-11-13'),
+(10, 153306, 0, 0, 0, '2019-11-14'),
+(11, 707399, 0, 0, 0, '2019-11-14'),
+(12, 794165, 0, 0, 0, '2019-11-14'),
+(13, 122976, 0, 0, 0, '2019-11-14'),
+(14, 616054, 0, 0, 0, '2019-11-14'),
+(15, 387108, 0, 0, 0, '2019-11-14'),
+(16, 706689, 0, 0, 0, '2019-11-14'),
+(17, 117521, 0, 0, 0, '2019-11-14');
 
 -- --------------------------------------------------------
 
@@ -120,12 +123,14 @@ CREATE TABLE `pin_list` (
 --
 
 INSERT INTO `pin_list` (`id`, `userident`, `pin`, `status`) VALUES
-(19, 1001, 369351, 'close'),
-(20, 1001, 771584, 'close'),
-(21, 1001, 528095, 'close'),
-(22, 1001, 711534, 'close'),
-(23, 1001, 850842, 'close'),
-(24, 1001, 126192, 'close');
+(1, 1001, 153306, 'close'),
+(2, 1001, 707399, 'close'),
+(3, 1001, 794165, 'close'),
+(4, 1001, 122976, 'close'),
+(5, 1001, 616054, 'close'),
+(6, 1001, 387108, 'close'),
+(7, 1001, 706689, 'close'),
+(8, 1001, 117521, 'close');
 
 -- --------------------------------------------------------
 
@@ -146,9 +151,10 @@ CREATE TABLE `pin_request` (
 --
 
 INSERT INTO `pin_request` (`id`, `userident`, `amount`, `date`, `status`) VALUES
-(9, 1001, 74000, '2019-11-10', 'close'),
-(10, 1001, 74000, '2019-11-11', 'close'),
-(11, 1001, 74000, '2019-11-11', 'close');
+(1, 1001, 74000, '2019-11-13', 'close'),
+(2, 1001, 74000, '2019-11-13', 'close'),
+(3, 1001, 74000, '2019-11-13', 'close'),
+(4, 1001, 74000, '2019-11-14', 'close');
 
 -- --------------------------------------------------------
 
@@ -162,22 +168,25 @@ CREATE TABLE `tree` (
   `Names` varchar(50) NOT NULL,
   `left` varchar(50) DEFAULT '',
   `right` varchar(50) DEFAULT '',
-  `leftcount` int(11) DEFAULT 0,
-  `rightcount` int(11) DEFAULT 0
+  `leftcount` int(11) DEFAULT '0',
+  `rightcount` int(11) DEFAULT '0',
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tree`
 --
 
-INSERT INTO `tree` (`id`, `userident`, `Names`, `left`, `right`, `leftcount`, `rightcount`) VALUES
-(1, 1001, 'Jean De Dieu Kwizera', '369351', '771584', 0, 0),
-(17, 369351, 'Emmanuel KALISA', '528095', '711534', 0, 0),
-(18, 771584, 'Charles KALIMBA', '850842', '126192', 0, 0),
-(19, 528095, 'kalisa', '', '', 0, 0),
-(20, 711534, 'Evode MUHIRE', '', '', 0, 0),
-(21, 850842, 'hghddfjh', '', '', 0, 0),
-(22, 126192, 'kjhgf', '', '', 0, 0);
+INSERT INTO `tree` (`id`, `userident`, `Names`, `left`, `right`, `leftcount`, `rightcount`, `date`) VALUES
+(1, 1001, 'Emma KALISA', '153306', '707399', 5, 3, '2019-11-13'),
+(11, 153306, 'Evode', '616054', '387108', 3, 1, '2019-11-14'),
+(12, 707399, 'Muhire', '794165', '122976', 1, 1, '2019-11-14'),
+(13, 794165, 'Charles', '', '', 0, 0, '2019-11-14'),
+(14, 122976, 'Kalimba', '', '', 0, 0, '2019-11-14'),
+(15, 616054, 'Mutoni', '706689', '117521', 1, 1, '2019-11-14'),
+(16, 387108, 'Jeannette', '', '', 0, 0, '2019-11-14'),
+(17, 706689, 'Jean', '', '', 0, 0, '2019-11-14'),
+(18, 117521, 'Mugisha', '', '', 0, 0, '2019-11-14');
 
 -- --------------------------------------------------------
 
@@ -195,6 +204,7 @@ CREATE TABLE `user` (
   `address` text NOT NULL,
   `under_userpin` varchar(50) DEFAULT '',
   `side` enum('left','right') NOT NULL,
+  `date` date NOT NULL,
   `user_status` varchar(100) NOT NULL,
   `picture` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -203,14 +213,16 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `userident`, `Names`, `NationalID`, `password`, `mobile`, `address`, `under_userpin`, `side`, `user_status`, `picture`) VALUES
-(1, 1001, 'Jean De Dieu Kwizera', 2147483647677557, '123', '0785991819', 'Kigali', '', 'left', 'Active', 'images.png'),
-(32, 369351, 'Emmanuel KALISA', 456765, '123', '6782837673', 'Gisenyi, kabari', '1001', 'left', 'Active', 'images.png'),
-(33, 771584, 'Charles KALIMBA', 7656789, '123', '0785991820', 'Kacyiru', '1001', 'right', 'Active', 'images.png'),
-(34, 528095, 'kalisa', 76578987, '123', '1324344', 'Kacyiru', '369351', 'left', 'Active', 'images.png'),
-(35, 711534, 'Evode MUHIRE', 9876578, '123', '45678878', 'Gisenyi, kabari', '369351', 'right', 'Active', 'images.png'),
-(36, 850842, 'hghddfjh', 987656789, '123', '8765789', 'Gisenyi, kabari', '771584', 'left', 'Active', 'images.png'),
-(37, 126192, 'kjhgf', 89765, '123', '0998765', 'Kacyiru', '771584', 'right', 'Active', 'images.png');
+INSERT INTO `user` (`id`, `userident`, `Names`, `NationalID`, `password`, `mobile`, `address`, `under_userpin`, `side`, `date`, `user_status`, `picture`) VALUES
+(1, 1001, 'Emma KALISA', 1991878878878, '123', '0785991820', 'Kigali/gasabo', '', '', '2019-11-13', 'Active', 'images.png'),
+(11, 153306, 'Evode', 57483920384, '123', '45678908', 'Gasabo', '1001', 'left', '2019-11-14', 'Active', 'images.png'),
+(12, 707399, 'Muhire', 98765678998, '123', '07857674747', 'Kicukiro', '1001', 'right', '2019-11-14', 'Active', 'images.png'),
+(13, 794165, 'Charles', 57834298347, '123', '078858585', 'Nyarugenge', '707399', 'left', '2019-11-14', 'Active', 'images.png'),
+(14, 122976, 'Kalimba', 7584978976789, '123', '078989898', 'Kigali', '707399', 'right', '2019-11-14', 'Active', 'images.png'),
+(15, 616054, 'Mutoni', 123456765432, '123', '07856789876', 'Kigali', '153306', 'left', '2019-11-14', 'Active', 'images.png'),
+(16, 387108, 'Jeannette', 3456787654567, '123', '0789889785', 'Gasabo', '153306', 'right', '2019-11-14', 'Active', 'images.png'),
+(17, 706689, 'Jean', 8765467876, '123', '0786867678', 'Kigali', '616054', 'left', '2019-11-14', 'Active', 'images.png'),
+(18, 117521, 'Mugisha', 345678654567, '345678976', '078678687', 'Kiagali', '616054', 'right', '2019-11-14', 'Active', 'images.png');
 
 --
 -- Indexes for dumped tables
@@ -284,37 +296,37 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `income`
 --
 ALTER TABLE `income`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `income_received`
 --
 ALTER TABLE `income_received`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pin_list`
 --
 ALTER TABLE `pin_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `pin_request`
 --
 ALTER TABLE `pin_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tree`
 --
 ALTER TABLE `tree`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
