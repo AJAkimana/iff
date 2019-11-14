@@ -37,4 +37,16 @@
 
             return $indirect;
         }
+
+        public function profitFromUsers()
+        {
+            $match = $this->matchUsers() - 1;
+
+            return intval($match) / 5;
+        }
     }
+
+        $calculator = new AmountCalculator(5, 3);
+        echo 'Your matching is '.$calculator->matchUsers().'<br/>';
+        echo 'Your indirect bonus is '.$calculator->indirectUsers().'<br/>';
+        echo 'Your profit to company is '.$calculator->profitFromUsers();
