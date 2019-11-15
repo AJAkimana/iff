@@ -19,6 +19,7 @@ if(isset($_GET['join_user'])){
 	$side = mysqli_real_escape_string($con,$_GET['side']);
 	$sponsor = mysqli_real_escape_string($con,$_GET['sponsor']);
 	$password = mysqli_real_escape_string($con,$_GET['pass1']);
+	// $password = md5($password);
 	$date = date("y-m-d");
 	$user_status= "Active";
 	$picture="images.png";
@@ -136,6 +137,17 @@ if(isset($_GET['join_user'])){
 			
 		}//Loop
 		
+		if ($temp_sponsor!="")
+		{
+			$income_data = income($temp_sponsor);
+
+			$new_day_bal = $income_data['day_bal']+5000;
+			$new_current_bal = $income_data['current_bal']+5000;
+			$new_total_bal = $income_data['total_bal']+5000;
+								
+			//update income
+			mysqli_query($con,"update income set day_bal='$new_day_bal', current_bal='$new_current_bal', total_bal='$new_total_bal' where userident='$temp_sponsor' limit 1");
+		}
 		
 		
 		
