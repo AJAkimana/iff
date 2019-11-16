@@ -96,12 +96,12 @@ if ('' != $first_left_user) {
                                         </a></td>
                                     <?php
 } else {
-    ?>
+        ?>
                                     <td colspan="2"><i class="fa fa-user fa-4x" style="color:#D520BE"></i>
                                         <p><?php echo $first_left_user; ?></p>
                                     </td>
                                     <?php
-}
+    }
 ?>
                                     <?php
 if ('' != $first_right_user) {
@@ -112,12 +112,12 @@ if ('' != $first_right_user) {
                                         </a></td>
                                     <?php
 } else {
-    ?>
+        ?>
                                     <td colspan="2"><i class="fa fa-user fa-4x" style="color:#D520BE"></i>
                                         <p><?php echo $first_right_user; ?></p>
                                     </td>
                                     <?php
-}
+    }
 ?>
                                 </tr>
                                 <tr height="150">
@@ -139,10 +139,10 @@ if ('' != $second_left_user) {
                                         </a></td>
                                     <?php
 } else {
-    ?>
+        ?>
                                     <td><i class="fa fa-user fa-4x" style="color:#361515"></i></td>
                                     <?php
-}
+    }
 ?>
                                     <?php
 if ('' != $second_right_user) {
@@ -153,10 +153,10 @@ if ('' != $second_right_user) {
                                         </a></td>
                                     <?php
 } else {
-    ?>
+        ?>
                                     <td><i class="fa fa-user fa-4x" style="color:#361515"></i></td>
                                     <?php
-}
+    }
 ?>
                                     <?php
 if ('' != $third_left_user) {
@@ -167,10 +167,10 @@ if ('' != $third_left_user) {
                                         </a></td>
                                     <?php
 } else {
-    ?>
+        ?>
                                     <td><i class="fa fa-user fa-4x" style="color:#361515"></i></td>
                                     <?php
-}
+    }
 ?>
                                     <?php
 if ('' != $thidr_right_user) {
@@ -181,10 +181,10 @@ if ('' != $thidr_right_user) {
                                         </a></td>
                                     <?php
 } else {
-    ?>
+        ?>
                                     <td><i class="fa fa-user fa-4x" style="color:#361515"></i></td>
                                     <?php
-}
+    }
 ?>
                                 </tr>
                             </table>
