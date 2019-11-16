@@ -1,10 +1,15 @@
 <?php
 include 'php-includes/connect.php';
 include 'php-includes/check-login.php';
+include 'php-includes/treeUtil.php';
+include 'php-includes/queryHelper.php';
 $userident = $_SESSION['userident'];
 $search = $userident;
-?>
-<?php
+$qHelper = new QueryHelper();
+$userTree = $qHelper->getUserCounts($userident);
+$leftSideCount = $userTree['leftcount'];
+$rightSideCount = $userTree['rightcount'];
+$calculator = new AmountCalculator($leftSideCount, $rightSideCount);
 function tree_data($userident)
 {
     global $con;
@@ -18,8 +23,6 @@ function tree_data($userident)
 
     return $data;
 }
-?>
-<?php
 if (isset($_GET['search-id'])) {
     $search_id = mysqli_real_escape_string($con, $_GET['search-id']);
     if ('' != $search_id) {
@@ -68,6 +71,53 @@ if (isset($_GET['search-id'])) {
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="text-center">
+                            The tree points structure
+                        </h2>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Matching point</h4>
+                            </div>
+                            <div class="panel-body">
+                                <?php echo $calculator->matchUsers(); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Indirect point</h4>
+                            </div>
+                            <div class="panel-body">
+                                <?php echo $calculator->getIndirectProfit(); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Gift check</h4>
+                            </div>
+                            <div class="panel-body">
+                                <?php echo $calculator->getGiftCheck(); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Aggregated point</h4>
+                            </div>
+                            <div class="panel-body">
+                              <?php echo $calculator->getTotalPoints(); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="table-responsive">

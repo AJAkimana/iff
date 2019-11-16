@@ -1,6 +1,6 @@
 <?php
-include('php-includes/check-login.php');
-include('php-includes/connect.php');
+include 'php-includes/check-login.php';
+include 'php-includes/connect.php';
 $userident = $_SESSION['userident'];
 ?>
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ $userident = $_SESSION['userident'];
     <!-- Custom Fonts -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
- 
+
 
 </head>
 
@@ -37,7 +37,7 @@ $userident = $_SESSION['userident'];
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include('php-includes/menu.php'); ?>
+        <?php include 'php-includes/menu.php'; ?>
 
         <!-- Page Content -->
         <div id="page-wrapper">
@@ -50,55 +50,55 @@ $userident = $_SESSION['userident'];
                 </div>
                 <!-- /.row -->
                 <div class="row">
-                	 <?php
-						$query = mysqli_query($con,"select * from income where userident='$userident'");
-						$result = mysqli_fetch_array($query);
-					?>
-                	<div class="col-lg-3">
-                    	<div class="panel panel-info">
-                        	<div class="panel-heading">
-                            	<h4 class="panel-title">Today's Income</h4>
+                    <?php
+                    $query = mysqli_query($con, "select * from income where userident='{$userident}'");
+                    $result = mysqli_fetch_array($query);
+                    ?>
+                    <div class="col-lg-3">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Today's Income</h4>
                             </div>
                             <div class="panel-body">
-                            	<?php 
-								echo $result['day_bal']
-								?>
+                                <?php
+                                echo $result['day_bal'];
+                                ?>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                    	<div class="panel panel-success">
-                        	<div class="panel-heading">
-                            	<h4 class="panel-title">Current Income</h4>
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Current Income</h4>
                             </div>
                             <div class="panel-body">
-                            	<?php 
-								echo $result['current_bal']
-								?>
+                                <?php
+                                echo $result['current_bal'];
+                                ?>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                    	<div class="panel panel-danger">
-                        	<div class="panel-heading">
-                            	<h4 class="panel-title">Total Income</h4>
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Total Income</h4>
                             </div>
                             <div class="panel-body">
-                            	<?php 
-								echo $result['total_bal']
-								?>
+                                <?php
+                                echo $result['total_bal'];
+                                ?>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                    	<div class="panel panel-warning">
-                        	<div class="panel-heading">
-                            	<h4 class="panel-title">Available Pin</h4>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Available Pin</h4>
                             </div>
                             <div class="panel-body">
-                            	<?php 
-								echo  mysqli_num_rows(mysqli_query($con,"select * from pin_list where userident='$userident' and status='open'"));
-								?>
+                                <?php
+                                echo  mysqli_num_rows(mysqli_query($con, "select * from pin_list where userident='{$userident}' and status='open'"));
+                                ?>
                             </div>
                         </div>
                     </div>
