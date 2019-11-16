@@ -1,0 +1,13 @@
+php-includes/connect.php
+vendor/
+dist/
+data/
+_notes/
+admin/vendor/
+admin/dist/
+admin/data/
+admin/_notes/
+accountant/vendor/
+accountant/dist/
+accountant/data/
+accountant/_notes/
