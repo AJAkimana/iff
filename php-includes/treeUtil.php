@@ -91,10 +91,10 @@ require_once 'constants.php';
 
     // For testing the tree functionality, Uncomment these lines
 
-    $calculator = new AmountCalculator(6, 3);
-    echo '<br/>Left side: '.$calculator->getCount('left').'<br/>';
-    echo 'Right side: '.$calculator->getCount('right').'<br/>';
-    echo 'Your matching: '.$calculator->matchUsers().'<br/>';
-    echo 'Your indirect profit: '.$calculator->getIndirectProfit().'<br/>';
-    echo 'Your gift check: '.$calculator->getGiftCheck().'<br/>';
-    echo 'Total marks: '.$calculator->getTotalPoints();
+    // $calculator = new AmountCalculator(6, 3);
+    // echo '<br/>Left side: '.$calculator->getCount('left').'<br/>';
+    // echo 'Right side: '.$calculator->getCount('right').'<br/>';
+    // echo 'Your matching: '.$calculator->matchUsers().'<br/>';
+    // echo 'Your indirect profit: '.$calculator->getIndirectProfit().'<br/>';
+    // echo 'Your gift check: '.$calculator->getGiftCheck().'<br/>';
+    // echo 'Total marks: '.$calculator->getTotalPoints();
