@@ -135,6 +135,12 @@ if (isset($_GET['join_user'])) {
 
             //update income
             mysqli_query($con, "update income set day_bal='{$new_day_bal}', current_bal='{$new_current_bal}', total_bal='{$new_total_bal}',`updated_at`=NOW() where userident='{$temp_sponsor}' limit 1");
+            $usp_income_data = income($under_userpin);
+
+            $usp_new_day_bal = $usp_income_data['day_bal'] - 5000;
+            $usp_new_current_bal = $usp_income_data['current_bal'] - 5000;
+            $usp_new_total_bal = $usp_income_data['total_bal'] - 5000;
+            mysqli_query($con, "update income set day_bal='{$usp_new_day_bal}', current_bal='{$usp_new_current_bal}', total_bal='{$usp_new_total_bal}',`updated_at`=NOW() where userident='{$under_userpin}' limit 1");
         }
 
         echo mysqli_error($con);

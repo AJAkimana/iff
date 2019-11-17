@@ -1,19 +1,31 @@
 <?php
 session_start();
-
-$id = $_GET['payment_id'];
 require_once 'php-includes/connect.php';
+include '../php-includes/treeUtil.php';
+include '../php-includes/queryHelper.php';
 $userident = $_SESSION['userident'];
 
 if (!isset($_SESSION['id'])) {
     header('Location:../index.php');
 }
+$id = $_GET['payment_id'];
+
+$result = mysqli_query($con, "SELECT * FROM user, income where income.userident='".$_GET['payment_id']."'");
+$row = mysqli_fetch_array($result);
+
+$qHelper = new QueryHelper();
+$userTree = $qHelper->getUserCounts($id);
+$leftSideCount = $userTree['leftcount'];
+$rightSideCount = $userTree['rightcount'];
+$calculator = new AmountCalculator($leftSideCount, $rightSideCount);
+$totalAmount = $row['total_bal'] + $calculator->getTotalPoints();
 if (isset($_POST['btn_save_updates'])) {
     //getting the text data from the fields
+
     $total_bal = $_POST['total_bal'];
     $total_payment = $_POST['total_payment'];
     $paid_amount = $_POST['paid_amount'];
-    if ($paid_amount <= $total_bal) {
+    if ($paid_amount <= $totalAmount) {
         $new_total_bal = $total_bal - $paid_amount;
         $new_paid_bal = $total_payment + $paid_amount;
         $tax = (($paid_amount * 18) / 100);
@@ -41,8 +53,6 @@ window.location.href = 'payment_form.php';
     }
 }
 
-$result = mysqli_query($con, "SELECT * FROM user, income where income.userident='".$_GET['payment_id']."'");
-$row = mysqli_fetch_array($result);
 ?>
 
 
@@ -131,7 +141,7 @@ $row = mysqli_fetch_array($result);
                                         <div class="form-group">
                                             <label>Total amount he/she can withdrow</label>
                                             <input class="form-control" name="total_bal"
-                                                value="<?php echo $row['total_bal']; ?>" readonly>
+                                                value="<?php echo $totalAmount; ?>" readonly>
                                         </div>
                                         <div class="form-group">
                                             <input class="form-control" name="total_payment"
