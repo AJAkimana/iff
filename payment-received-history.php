@@ -1,6 +1,6 @@
 <?php
-require('php-includes/connect.php');
-include('php-includes/check-login.php');
+require 'php-includes/connect.php';
+include 'php-includes/check-login.php';
 $userident = $_SESSION['userident'];
 ?>
 
@@ -29,7 +29,7 @@ $userident = $_SESSION['userident'];
     <!-- Custom Fonts -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
- 
+
 
 </head>
 
@@ -38,7 +38,7 @@ $userident = $_SESSION['userident'];
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include('php-includes/menu.php'); ?>
+        <?php include 'php-includes/menu.php'; ?>
 
         <!-- Page Content -->
         <div id="page-wrapper">
@@ -51,39 +51,37 @@ $userident = $_SESSION['userident'];
                 </div>
                 <!-- /.row -->
                 <div class="row">
-                	<div class="col-lg-6">
-                    	<br><br>
-                    	<table class="table table-bordered table-striped">
-                        	<tr>
-                            	<th>S.n.</th>
+                    <div class="col-lg-6">
+                        <br><br>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>S.n.</th>
                                 <th>Amount</th>
                                 <th>Date</th>
                             </tr>
-                            <?php 
-							$i=1;
-							$query = mysqli_query($con,"select * from income_received where userident='$userident' order by id desc");
-							if(mysqli_num_rows($query)>0){
-								while($row=mysqli_fetch_array($query)){
-									$amount = $row['amount'];
-									$date = $row['date'];
-								?>
-                                	<tr>
-                                    	<td><?php echo $i; ?></td>
-                                        <td><?php echo $amount; ?></td>
-                                        <td><?php echo $date; ?></td>
-                                    </tr>
-                                <?php
-									$i++;
-								}
-							}
-							else{
-							?>
-                            	<tr>
-                                	<td colspan="4">You did'nt received any payment yet.</td>
-                                </tr>
                             <?php
-							}
-							?>
+                            $i = 1;
+                            $query = mysqli_query($con, "select * from income_received where userident='{$userident}' order by id desc");
+                            if (mysqli_num_rows($query) > 0) {
+                                while ($row = mysqli_fetch_array($query)) {
+                                    $amount = $row['amount'];
+                                    $date = $row['created_at']; ?>
+                            <tr>
+                                <td><?php echo $i; ?></td>
+                                <td><?php echo $amount; ?></td>
+                                <td><?php echo $date; ?></td>
+                            </tr>
+                            <?php
+                                    ++$i;
+                                }
+                            } else {
+                                ?>
+                            <tr>
+                                <td colspan="4">You did'nt received any payment yet.</td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
                         </table>
                     </div>
                 </div>

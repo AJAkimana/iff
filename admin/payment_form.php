@@ -1,54 +1,48 @@
-
-
 <?php
 session_start();
-    
-$id=$_GET['payment_id'];
-require_once('php-includes/connect.php');
+
+$id = $_GET['payment_id'];
+require_once 'php-includes/connect.php';
 $userident = $_SESSION['userident'];
 
-if(!isset($_SESSION['id'])) {
+if (!isset($_SESSION['id'])) {
     header('Location:../index.php');
 }
-if(isset($_POST['btn_save_updates'])){
+if (isset($_POST['btn_save_updates'])) {
     //getting the text data from the fields
-    $total_bal = $_POST["total_bal"];
-    $total_payment = $_POST["total_payment"];
-    $paid_amount = $_POST["paid_amount"];
-    if($paid_amount <= $total_bal ){
+    $total_bal = $_POST['total_bal'];
+    $total_payment = $_POST['total_payment'];
+    $paid_amount = $_POST['paid_amount'];
+    if ($paid_amount <= $total_bal) {
         $new_total_bal = $total_bal - $paid_amount;
         $new_paid_bal = $total_payment + $paid_amount;
-        $tax = (($paid_amount*18)/100);
-        $amout_to_take = ($paid_amount - $tax) -1000;
+        $tax = (($paid_amount * 18) / 100);
+        $amout_to_take = ($paid_amount - $tax) - 1000;
 
-        $update = "update income set total_bal='$new_total_bal', total_payment='$new_paid_bal' where userident='$id'";
+        $update = "update income set total_bal='{$new_total_bal}', total_payment='{$new_paid_bal}',`updated_at`=NOW() where userident='{$id}'";
         $run = mysqli_query($con, $update);
-        if($run)
-        {
+        if ($run) {
             ?>
-            <script>
-              alert('Collect : <?php echo $amout_to_take; ?>  of <?php echo $paid_amount; ?> after charges');
-              window.location.href='payment.php';
-              </script>
-            <?php 
-        }
-        else
-        {
+<script>
+alert('Collect : <?php echo $amout_to_take; ?>  of <?php echo $paid_amount; ?> after charges');
+window.location.href = 'payment.php';
+</script>
+<?php
+        } else {
             echo "<script>alert('There is something wrong!')</script>";
         }
-    }
-    else{
+    } else {
         ?>
-          <script>
-            alert('You do not have those amount !...');
-            window.location.href='payment_form.php';
-            </script>
-          <?php
+<script>
+alert('You do not have those amount !...');
+window.location.href = 'payment_form.php';
+</script>
+<?php
     }
 }
 
-$result = mysqli_query($con,"SELECT * FROM user, income where income.userident='" . $_GET['payment_id'] . "'");
-$row= mysqli_fetch_array($result);
+$result = mysqli_query($con, "SELECT * FROM user, income where income.userident='".$_GET['payment_id']."'");
+$row = mysqli_fetch_array($result);
 ?>
 
 
@@ -97,7 +91,7 @@ $row= mysqli_fetch_array($result);
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include('php-includes/menu.php'); ?>
+        <?php include 'php-includes/menu.php'; ?>
 
         <!-- Page Content -->
         <div id="page-wrapper">
@@ -112,82 +106,88 @@ $row= mysqli_fetch_array($result);
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                        <b>Pay </b>
+                            <b>Pay </b>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="row">
-                                    <div class="col-lg-6">
-                                        <form role="form" method="post" action="">
-                                            <?php
-                                            if(isset($errMSG)){
+                                <div class="col-lg-6">
+                                    <form role="form" method="post" action="">
+                                        <?php
+                                            if (isset($errMSG)) {
                                                 ?>
-                                                <div class="alert alert-danger">
-                                                <span class="glyphicon glyphicon-info-sign"></span> &nbsp; <?php echo $errMSG; ?>
-                                                </div>
-                                                <?php
+                                        <div class="alert alert-danger">
+                                            <span class="glyphicon glyphicon-info-sign"></span> &nbsp;
+                                            <?php echo $errMSG; ?>
+                                        </div>
+                                        <?php
                                             }
                                             ?>
-                                            <div class="form-group">
-                                                <label>User Names</label>
-                                                <input class="form-control" name="Names" value="<?php echo $row['Names']; ?>"  readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Total amount he/she can withdrow</label>
-                                                <input class="form-control" name="total_bal" value="<?php echo $row['total_bal']; ?>" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <input class="form-control" name="total_payment" value="<?php echo $row['total_payment']; ?>" style="display: none">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Paid Amount</label>
-                                                <input class="form-control" name="paid_amount" >
-                                            </div>
-                                            <button type="submit" name="btn_save_updates" class="btn btn-success"><span class="glyphicon glyphicon-floppy-save"></span>&nbsp; Make Payment</button>
-                                        </form>
-                                    </div>
-                            
+                                        <div class="form-group">
+                                            <label>User Names</label>
+                                            <input class="form-control" name="Names"
+                                                value="<?php echo $row['Names']; ?>" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Total amount he/she can withdrow</label>
+                                            <input class="form-control" name="total_bal"
+                                                value="<?php echo $row['total_bal']; ?>" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" name="total_payment"
+                                                value="<?php echo $row['total_payment']; ?>" style="display: none">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Paid Amount</label>
+                                            <input class="form-control" name="paid_amount">
+                                        </div>
+                                        <button type="submit" name="btn_save_updates" class="btn btn-success"><span
+                                                class="glyphicon glyphicon-floppy-save"></span>&nbsp; Make
+                                            Payment</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <!-- /.panel -->
+                        </div>
+                        <!-- /.col-lg-12 -->
                     </div>
-                    <!-- /.panel -->
+
+
+
+
+                    <!-- /.row -->
                 </div>
-                <!-- /.col-lg-12 -->
+                <!-- /#page-wrapper -->
+
             </div>
+            <!-- /#wrapper -->
 
+            <!-- jQuery -->
+            <script src="../vendor/jquery/jquery.min.js"></script>
 
-            
-          
-            <!-- /.row -->
-        </div>
-        <!-- /#page-wrapper -->
+            <!-- Bootstrap Core JavaScript -->
+            <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
-    </div>
-    <!-- /#wrapper -->
+            <!-- Metis Menu Plugin JavaScript -->
+            <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
+            <!-- DataTables JavaScript -->
+            <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+            <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+            <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+            <!-- Custom Theme JavaScript -->
+            <script src="../dist/js/sb-admin-2.js"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
-    <!-- DataTables JavaScript -->
-    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
-    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-
-    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
-    });
-    </script>
+            <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+            <script>
+            $(document).ready(function() {
+                $('#dataTables-example').DataTable({
+                    responsive: true
+                });
+            });
+            </script>
 
 </body>
 

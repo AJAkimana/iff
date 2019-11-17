@@ -1,6 +1,6 @@
 <?php
-include('php-includes/check-login.php');
-require('php-includes/connect.php');
+include 'php-includes/check-login.php';
+require 'php-includes/connect.php';
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ require('php-includes/connect.php');
     <!-- Custom Fonts -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
- 
+
 
 </head>
 
@@ -37,7 +37,7 @@ require('php-includes/connect.php');
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include('php-includes/menu.php'); ?>
+        <?php include 'php-includes/menu.php'; ?>
 
         <!-- Page Content -->
         <div id="page-wrapper">
@@ -50,41 +50,40 @@ require('php-includes/connect.php');
                 </div>
                 <!-- /.row -->
                 <div class="row">
-                	<div class="col-lg-12">
-                    	<div class="table-responsive">
-                        	<table class="table table-bordered table-striped">
-                            	<thead>
-                                	<tr>
-                                    	<th>S.N.</th>
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S.N.</th>
                                         <th>Userid</th>
                                         <th>Amount</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-								<?php
-                                	$query = mysqli_query($con,"select * from income_received order by id desc");
-									if(mysqli_num_rows($query)>0){
-										$i=1;
-										while($row=mysqli_fetch_array($query)){
-										?>
-                                        	<tr>
-                                            	<td><?php echo $i; ?></td>
-                                                <td><?php echo $row['userident']; ?></td>
-                                                <td><?php echo $row['amount']; ?></td>
-                                                <td><?php echo $row['date']; ?></td>
-                                            </tr>
-                                        <?php
-											$i++;
-										}
-									}
-									else{
-									?>
-                                    	<tr>
-                                        	<td colspan="5">No user exist</td>
-                                        </tr>
                                     <?php
-									}
+                                    $query = mysqli_query($con, 'select * from income_received order by id desc');
+                                    if (mysqli_num_rows($query) > 0) {
+                                        $i = 1;
+                                        while ($row = mysqli_fetch_array($query)) {
+                                            ?>
+                                    <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td><?php echo $row['userident']; ?></td>
+                                        <td><?php echo $row['amount']; ?></td>
+                                        <td><?php echo $row['created_at']; ?></td>
+                                    </tr>
+                                    <?php
+                                            ++$i;
+                                        }
+                                    } else {
+                                        ?>
+                                    <tr>
+                                        <td colspan="5">No user exist</td>
+                                    </tr>
+                                    <?php
+                                    }
                                 ?>
                                 </tbody>
                             </table>
