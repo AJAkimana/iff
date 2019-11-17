@@ -1,37 +1,31 @@
 <?php
-require('php-includes/connect.php');
-include('php-includes/check-login.php');
+require 'php-includes/connect.php';
+include 'php-includes/check-login.php';
 $userident = $_SESSION['userident'];
 $pin = $_SESSION['userident'];
 ?>
 <?php
-//pin request 
-if(isset($_GET['pin_request'])){
-	$amount = mysqli_real_escape_string($con,$_GET['amount']);
-	$date = date("y-m-d");
-	
-	
-	if($amount!=''){
+//pin request
+if (isset($_GET['pin_request'])) {
+    $amount = mysqli_real_escape_string($con, $_GET['amount']);
+    $date = date('y-m-d');
 
-        if($amount < 37000){
+    if ('' != $amount) {
+        if ($amount < 37000) {
             echo '<script>alert("Amount have to be more than 37000.");window.location.assign("pin-request.php");</script>';
-        }
-        else{
-		    //Inset the value to pin request
-            $query = mysqli_query($con,"insert into pin_request(`userident`,`amount`,`date`) values('$pin','$amount','$date')");
-            if($query){
+        } else {
+            //Inset the value to pin request
+            $query = mysqli_query($con, "insert into pin_request(`userident`,`amount`) values('{$pin}','{$amount}')");
+            if ($query) {
                 echo '<script>alert("Pin request sent successfully");window.location.assign("pin-request.php");</script>';
-            }
-            else{
+            } else {
                 //echo mysqli_error($con);
                 echo '<script>alert("Unknown error occure.");window.location.assign("pin-request.php");</script>';
             }
         }
-	}
-	else{
-		echo '<script>alert("Please fill all the fields");</script>';
-	}
-	
+    } else {
+        echo '<script>alert("Please fill all the fields");</script>';
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -59,7 +53,7 @@ if(isset($_GET['pin_request'])){
     <!-- Custom Fonts -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
- 
+
 
 </head>
 
@@ -68,7 +62,7 @@ if(isset($_GET['pin_request'])){
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include('php-includes/menu.php'); ?>
+        <?php include 'php-includes/menu.php'; ?>
 
         <!-- Page Content -->
         <div id="page-wrapper">
@@ -81,55 +75,53 @@ if(isset($_GET['pin_request'])){
                 </div>
                 <!-- /.row -->
                 <div class="row">
-                	<div class="col-lg-4">
-                    	<form method="get">	
-                        	<div class="form-group">
-                            	<label>Amount</label>
+                    <div class="col-lg-4">
+                        <form method="get">
+                            <div class="form-group">
+                                <label>Amount</label>
                                 <input type="text" name="amount" class="form-control" required>
                             </div>
                             <div class="form-group">
-                            	<input type="submit" name="pin_request" class="btn btn-primary" value="Pin Request">
+                                <input type="submit" name="pin_request" class="btn btn-primary" value="Pin Request">
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="row">
-                	<div class="col-lg-6">
-                    	<br><br>
-                    	<table class="table table-bordered table-striped">
-                        	<tr>
-                            	<th>S.n.</th>
+                    <div class="col-lg-6">
+                        <br><br>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>S.n.</th>
                                 <th>Amount</th>
                                 <th>Date</th>
                                 <th>Status</th>
                             </tr>
-                            <?php 
-							$i=1;
-							$query = mysqli_query($con,"select * from pin_request where userident='$pin' order by id desc");
-							if(mysqli_num_rows($query)>0){
-								while($row=mysqli_fetch_array($query)){
-									$amount = $row['amount'];
-									$date = $row['date'];
-									$status = $row['status'];
-								?>
-                                	<tr>
-                                    	<td><?php echo $i; ?></td>
-                                        <td><?php echo $amount; ?></td>
-                                        <td><?php echo $date; ?></td>
-                                        <td><?php echo $status; ?></td>
-                                    </tr>
-                                <?php
-									$i++;
-								}
-							}
-							else{
-							?>
-                            	<tr>
-                                	<td colspan="4">You have no pin request yet.</td>
-                                </tr>
                             <?php
-							}
-							?>
+                            $i = 1;
+                            $query = mysqli_query($con, "select * from pin_request where userident='{$pin}' order by id desc");
+                            if (mysqli_num_rows($query) > 0) {
+                                while ($row = mysqli_fetch_array($query)) {
+                                    $amount = $row['amount'];
+                                    $date = $row['created_at'];
+                                    $status = $row['status']; ?>
+                            <tr>
+                                <td><?php echo $i; ?></td>
+                                <td><?php echo $amount; ?></td>
+                                <td><?php echo $date; ?></td>
+                                <td><?php echo $status; ?></td>
+                            </tr>
+                            <?php
+                                    ++$i;
+                                }
+                            } else {
+                                ?>
+                            <tr>
+                                <td colspan="4">You have no pin request yet.</td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
                         </table>
                     </div>
                 </div>

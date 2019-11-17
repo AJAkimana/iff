@@ -1,19 +1,19 @@
 <?php
-include('php-includes/check-login.php');
-require('php-includes/connect.php');
+include 'php-includes/check-login.php';
+require 'php-includes/connect.php';
 ?>
 <?php
-if(isset($_GET['userident'])){
-	$userid = mysqli_real_escape_string($con,$_GET['userident']);
-	$amount = mysqli_real_escape_string($con,$_GET['amount']);
-	
-	$date = date("Y-m-d");
-	
-	$query = mysqli_query($con,"insert into income_received(`userident`, `amount`, `date`) value('$userid', '$amount', '$date')");
-	
-	$query = mysqli_query($con,"update income set current_bal=0 where userident='$userid'");
-	
-	echo '<script>alert("Payment has paid");window.location.assign("income.php");</script>';
+if (isset($_GET['userident'])) {
+    $userid = mysqli_real_escape_string($con, $_GET['userident']);
+    $amount = mysqli_real_escape_string($con, $_GET['amount']);
+
+    $date = date('Y-m-d');
+
+    $query = mysqli_query($con, "insert into income_received(`userident`, `amount`) value('{$userid}', '{$amount}')");
+
+    $query = mysqli_query($con, "update income set current_bal=0,`updated_at`=NOW() where userident='{$userid}'");
+
+    echo '<script>alert("Payment has paid");window.location.assign("income.php");</script>';
 }
 ?>
 <!DOCTYPE html>
@@ -41,7 +41,7 @@ if(isset($_GET['userident'])){
     <!-- Custom Fonts -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
- 
+
 
 </head>
 
@@ -50,7 +50,7 @@ if(isset($_GET['userident'])){
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include('php-includes/menu.php'); ?>
+        <?php include 'php-includes/menu.php'; ?>
 
         <!-- Page Content -->
         <div id="page-wrapper">
@@ -63,12 +63,12 @@ if(isset($_GET['userident'])){
                 </div>
                 <!-- /.row -->
                 <div class="row">
-                	<div class="col-lg-12">
-                    	<div class="table-responsive">
-                        	<table class="table table-bordered table-striped">
-                            	<thead>
-                                	<tr>
-                                    	<th>S.N.</th>
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>S.N.</th>
                                         <th>Userid</th>
                                         <th>Amount</th>
                                         <th>Account</th>
@@ -76,36 +76,36 @@ if(isset($_GET['userident'])){
                                     </tr>
                                 </thead>
                                 <tbody>
-								<?php
-                                	$query = mysqli_query($con,"select * from income where current_bal>=100");
-									if(mysqli_num_rows($query)>0){
-										$i=1;
-										while($row=mysqli_fetch_array($query)){
-											$userid = $row['userident'];
-											$amount = $row['current_bal'];
-											
-											$query_user = mysqli_query($con,"select * from user where userident='$userid'");
-											$result = mysqli_fetch_array($query_user);
-											$account = $result['mobile'];
-										?>
-                                        	<tr>
-                                            	<td><?php echo $i; ?></td>
-                                                <td><?php echo $userid; ?></td>
-                                                <td><?php echo $amount; ?></td>
-                                                <td><?php echo $account; ?></td>
-                                                <td><a href="income.php?<?php echo 'userident='.$userid.'&amount='.$amount ?>">Send</a></td>
-                                            </tr>
-                                        <?php
-											$i++;
-										}
-									}
-									else{
-									?>
-                                    	<tr>
-                                        	<td colspan="5">No user exist</td>
-                                        </tr>
                                     <?php
-									}
+                                    $query = mysqli_query($con, 'select * from income where current_bal>=100');
+                                    if (mysqli_num_rows($query) > 0) {
+                                        $i = 1;
+                                        while ($row = mysqli_fetch_array($query)) {
+                                            $userid = $row['userident'];
+                                            $amount = $row['current_bal'];
+
+                                            $query_user = mysqli_query($con, "select * from user where userident='{$userid}'");
+                                            $result = mysqli_fetch_array($query_user);
+                                            $account = $result['mobile']; ?>
+                                    <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td><?php echo $userid; ?></td>
+                                        <td><?php echo $amount; ?></td>
+                                        <td><?php echo $account; ?></td>
+                                        <td><a
+                                                href="income.php?<?php echo 'userident='.$userid.'&amount='.$amount; ?>">Send</a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                            ++$i;
+                                        }
+                                    } else {
+                                        ?>
+                                    <tr>
+                                        <td colspan="5">No user exist</td>
+                                    </tr>
+                                    <?php
+                                    }
                                 ?>
                                 </tbody>
                             </table>

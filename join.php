@@ -63,20 +63,20 @@ if (isset($_GET['join_user'])) {
     //Now we will save all the information
     if (1 == $flag) {
         //Insert into User profile
-        $query = mysqli_query($con, "insert into user(`userident`,`Names`,`NationalID`,`password`,`mobile`,`address`,`under_userpin`,`side`,`user_status`,`picture`,`date`) values('{$pin}','{$names}','{$natio_id}','{$password}','{$mobile}','{$address}','{$under_userpin}','{$side}','{$user_status}','{$picture}','{$date}')");
+        $query = mysqli_query($con, "insert into user(`userident`,`Names`,`NationalID`,`password`,`mobile`,`address`,`under_userpin`,`side`,`user_status`,`picture`) values('{$pin}','{$names}','{$natio_id}','{$password}','{$mobile}','{$address}','{$under_userpin}','{$side}','{$user_status}','{$picture}')");
 
         //Insert into Tree
         //So that later on we can view tree.
-        $query = mysqli_query($con, "insert into tree(`userident`,`Names`,`date`) values('{$pin}','{$names}','{$date}')");
+        $query = mysqli_query($con, "insert into tree(`userident`,`Names`) values('{$pin}','{$names}')");
 
         //Insert to side
-        $query = mysqli_query($con, "update tree set `{$side}`='{$pin}' where userident='{$under_userpin}'");
+        $query = mysqli_query($con, "update tree set `{$side}`='{$pin}',`updated_at`=NOW() where userident='{$under_userpin}'");
 
         //Update pin status to close
-        $query = mysqli_query($con, "update pin_list set status='close' where pin='{$pin}'");
+        $query = mysqli_query($con, "update pin_list set status='close',`updated_at`=NOW() where pin='{$pin}'");
 
         //Inset into Icome
-        $query = mysqli_query($con, "insert into income (`userident`,`date`) values('{$pin}','{$date}')");
+        $query = mysqli_query($con, "insert into income (`userident`) values('{$pin}')");
         echo mysqli_error($con);
         //This is the main part to join a user\
         //If you will do any mistake here. Then the site will not work.
@@ -99,7 +99,7 @@ if (isset($_GET['join_user'])) {
             $current_temp_side_count = $r[$temp_side_count] + 1;
             // $temp_under_userpin;
             // $temp_side_count;
-            mysqli_query($con, "update tree set `{$temp_side_count}`={$current_temp_side_count} where userident='{$temp_under_userpin}'");
+            mysqli_query($con, "update tree set `{$temp_side_count}`={$current_temp_side_count},`updated_at`=NOW() where userident='{$temp_under_userpin}'");
 
             //income
             if ('' != $temp_sponsor) {
@@ -134,7 +134,7 @@ if (isset($_GET['join_user'])) {
             $new_total_bal = $income_data['total_bal'] + 5000;
 
             //update income
-            mysqli_query($con, "update income set day_bal='{$new_day_bal}', current_bal='{$new_current_bal}', total_bal='{$new_total_bal}' where userident='{$temp_sponsor}' limit 1");
+            mysqli_query($con, "update income set day_bal='{$new_day_bal}', current_bal='{$new_current_bal}', total_bal='{$new_total_bal}',`updated_at`=NOW() where userident='{$temp_sponsor}' limit 1");
         }
 
         echo mysqli_error($con);

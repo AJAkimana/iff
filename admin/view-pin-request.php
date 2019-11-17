@@ -21,7 +21,7 @@ if (isset($_POST['send'])) {
     }
 
     //updae pin request status
-    mysqli_query($con, "update pin_request set status='close' where id='{$id}' limit 1");
+    mysqli_query($con, "update pin_request set status='close',`updated_at`=NOW() where id='{$id}' limit 1");
 
     echo '<script>alert("Pin send successfully.");window.location.assign("view-pin-request.php");</script>';
 }
@@ -106,7 +106,7 @@ function pin_generate()
                                             $id = $row['id'];
                                             $userident = $row['userident'];
                                             $amount = $row['amount'];
-                                            $date = $row['date']; ?>
+                                            $date = $row['created_at']; ?>
                                 <tr>
                                     <td><?php echo $i; ?></td>
                                     <td><?php echo $userident; ?></td>
