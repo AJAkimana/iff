@@ -59,6 +59,9 @@ $result = mysqli_fetch_array($query);
                         <li>
                             <a href="income-history.php"><i class="fa fa-rupee fa-fw"></i> Income History</a>
                         </li>
+                        <li>
+                            <a href="payment.php"><i class="fa fa-rupee fa-fw"></i> Do Payment</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
